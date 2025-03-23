@@ -7,23 +7,29 @@ services:
       # You can mount the container's volume paths to directory paths on your local machine.
       # Models will be stored in the `./models' directory on your machine.
       # Similarly, all output files will be stored in the `./outputs` directory.
-      - ./models:/Whisper-WebUI/models
-      - ./outputs:/Whisper-WebUI/outputs
+      - ../files/models:/Whisper-WebUI/models
+      - ../files/outputs:/Whisper-WebUI/outputs
 
     ports:
-      - "7860:7860"
+      - "7868:7860"
 
     stdin_open: true
     tty: true
 
     entrypoint: ["python", "app.py", "--server_port", "7860", "--server_name", "0.0.0.0",]
+    networks:
+      - dokploy-network
+
+networks:
+  dokploy-network:
+    external: true
 
     # If you're not using nvidia GPU, Update device to match yours.
     # See more info at : https://docs.docker.com/compose/compose-file/deploy/#driver
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [ gpu ]
+    #deploy:
+     # resources:
+      #  reservations:
+       #   devices:
+       #     - driver: nvidia
+        #      count: all
+         #     capabilities: [ gpu ]
